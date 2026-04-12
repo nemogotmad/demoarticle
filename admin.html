@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - ArticleCMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .admin-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .admin-header {
+            background: #1e3c72;
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .logout-btn, .back-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .admin-content {
+            padding: 30px;
+        }
+        .login-form {
+            max-width: 400px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+        .login-form button {
+            width: 100%;
+            padding: 15px;
+            background: #2a5298;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        button {
+            background: #2a5298;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn-danger { background: #ef4444; }
+        .btn-success { background: #10b981; }
+        .btn-warning { background: #f59e0b; }
+        .article-form, .settings-form {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+        .article-item {
+            background: #f8fafc;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .settings-section {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            border: 2px solid #f59e0b;
+        }
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: none;
+        }
+        .alert-success { background: #d1fae5; color: #065f46; }
+        .alert-error { background: #fee2e2; color: #991b1b; }
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        .tab-btn {
+            background: none;
+            color: #334155;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .tab-btn.active {
+            background: #2a5298;
+            color: white;
+            border-radius: 8px;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>🔐 ArticleCMS Admin Panel</h1>
+        <div>
+            <a href="index.html" class="back-btn">← View Site</a>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+    
+    <div class="admin-content">
+        <div id="loginScreen" class="login-form">
+            <h2>Admin Login</h2>
+            <input type="password" id="loginPassword" placeholder="Enter password">
+            <button onclick="login()">Login</button>
+            <div style="margin-top: 20px; font-size: 0.8rem;">Default: <strong>admin123</strong></div>
+        </div>
+
+        <div id="adminContent" style="display: none;">
+            <!-- Tab Navigation -->
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="showTab('articles')">📝 Articles</button>
+                <button class="tab-btn" onclick="showTab('settings')">⚙️ Site Settings</button>
+                <button class="tab-btn" onclick="showTab('security')">🔒 Security</button>
+            </div>
+
+            <!-- Articles Tab -->
+            <div id="tabArticles" class="tab-content active">
+                <div class="article-form">
+                    <h3>✏️ Create / Edit Article</h3>
+                    <input type="text" id="articleTitle" placeholder="Title">
+                    <select id="articleCategory">
+                        <option>Technology</option><option>Lifestyle</option>
+                        <option>News</option><option>Business</option><option>Tutorial</option>
+                    </select>
+                    <input type="text" id="articleImage" placeholder="Image URL" value="https://picsum.photos/400/250">
+                    <textarea id="articleExcerpt" rows="3" placeholder="Excerpt"></textarea>
+                    <textarea id="articleContent" rows="8" placeholder="Full content"></textarea>
+                    <button onclick="saveArticle()">💾 Save Article</button>
+                    <button onclick="clearForm()" class="btn-danger">Clear</button>
+                    <input type="hidden" id="editingId">
+                </div>
+                <div id="adminArticlesList"></div>
+            </div>
+
+            <!-- Site Settings Tab -->
+            <div id="tabSettings" class="tab-content">
+                <div class="settings-form">
+                    <h3>🏠 Site Customization</h3>
+                    <label>Site Name:</label>
+                    <input type="text" id="siteName" placeholder="Site Name" value="ArticleCMS">
+                    
+                    <label>Site Logo (emoji or text):</label>
+                    <input type="text" id="siteLogo" placeholder="Logo" value="📝 ArticleCMS">
+                    
+                    <label>Hero Title:</label>
+                    <input type="text" id="heroTitle" placeholder="Hero Title" value="Welcome to ArticleCMS">
+                    
+                    <label>Hero Tagline:</label>
+                    <input type="text" id="heroTagline" placeholder="Tagline" value="Quality content, thoughtfully curated">
+                    
+                    <label>Site Description (for SEO):</label>
+                    <textarea id="siteDescription" rows="2" placeholder="Site description">Quality articles, tutorials, and insights on technology, lifestyle, business, and more.</textarea>
+                    
+                    <label>Footer Description:</label>
+                    <textarea id="footerDesc" rows="2" placeholder="Footer description">Premium content network delivering quality articles daily.</textarea>
+                    
+                    <label>Copyright Text:</label>
+                    <input type="text" id="copyright" placeholder="Copyright" value="© 2024 ArticleCMS. All rights reserved.">
+                    
+                    <button onclick="saveSiteSettings()" class="btn-success">💾 Save Site Settings</button>
+                    <button onclick="resetSiteSettings()" class="btn-warning">↺ Reset to Default</button>
+                </div>
+            </div>
+
+            <!-- Security Tab -->
+            <div id="tabSecurity" class="tab-content">
+                <div class="settings-section">
+                    <h3>🔐 Change Admin Password</h3>
+                    <div id="passwordAlert" class="alert"></div>
+                    <input type="password" id="newPassword" placeholder="New password (min 4 characters)">
+                    <input type="password" id="confirmPassword" placeholder="Confirm password">
+                    <button onclick="changePassword()" class="btn-success">Change Password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let adminPassword = "admin123";
+    let articles = [];
+
+    function showTab(tabName) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        
+        if (tabName === 'articles') {
+            document.getElementById('tabArticles').classList.add('active');
+            document.querySelector('.tab-btn').classList.add('active');
+        } else if (tabName === 'settings') {
+            document.getElementById('tabSettings').classList.add('active');
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            loadSiteSettingsToForm();
+        } else if (tabName === 'security') {
+            document.getElementById('tabSecurity').classList.add('active');
+            document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        }
+    }
+
+    function loadSiteSettingsToForm() {
+        const settings = localStorage.getItem('siteSettings');
+        if (settings) {
+            const site = JSON.parse(settings);
+            document.getElementById('siteName').value = site.siteName || 'ArticleCMS';
+            document.getElementById('siteLogo').value = site.siteLogo || '📝 ArticleCMS';
+            document.getElementById('heroTitle').value = site.heroTitle || 'Welcome to ArticleCMS';
+            document.getElementById('heroTagline').value = site.heroTagline || 'Quality content, thoughtfully curated';
+            document.getElementById('siteDescription').value = site.siteDescription || 'Quality articles, tutorials, and insights on technology, lifestyle, business, and more.';
+            document.getElementById('footerDesc').value = site.footerDesc || 'Premium content network delivering quality articles daily.';
+            document.getElementById('copyright').value = site.copyright || '© 2024 ArticleCMS. All rights reserved.';
+        } else {
+            // Default values
+            document.getElementById('siteName').value = 'ArticleCMS';
+            document.getElementById('siteLogo').value = '📝 ArticleCMS';
+            document.getElementById('heroTitle').value = 'Welcome to ArticleCMS';
+            document.getElementById('heroTagline').value = 'Quality content, thoughtfully curated';
+            document.getElementById('siteDescription').value = 'Quality articles, tutorials, and insights on technology, lifestyle, business, and more.';
+            document.getElementById('footerDesc').value = 'Premium content network delivering quality articles daily.';
+            document.getElementById('copyright').value = '© 2024 ArticleCMS. All rights reserved.';
+        }
+    }
+
+    function saveSiteSettings() {
+        const settings = {
+            siteName: document.getElementById('siteName').value,
+            siteLogo: document.getElementById('siteLogo').value,
+            heroTitle: document.getElementById('heroTitle').value,
+            heroTagline: document.getElementById('heroTagline').value,
+            siteDescription: document.getElementById('siteDescription').value,
+            footerDesc: document.getElementById('footerDesc').value,
+            copyright: document.getElementById('copyright').value,
+            siteTitle: document.getElementById('siteName').value
+        };
+        localStorage.setItem('siteSettings', JSON.stringify(settings));
+        alert('Site settings saved! Refresh the page to see changes.');
+    }
+
+    function resetSiteSettings() {
+        localStorage.removeItem('siteSettings');
+        loadSiteSettingsToForm();
+        alert('Settings reset to default!');
+    }
+
+    function checkSession() {
+        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            loadArticlesList();
+            loadSiteSettingsToForm();
+        }
+    }
+
+    function login() {
+        const pass = document.getElementById('loginPassword').value;
+        if (pass === adminPassword) {
+            sessionStorage.setItem('adminLoggedIn', 'true');
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            loadArticlesList();
+            loadSiteSettingsToForm();
+        } else {
+            alert('Wrong password!');
+        }
+    }
+
+    function logout() {
+        sessionStorage.removeItem('adminLoggedIn');
+        location.reload();
+    }
+
+    function changePassword() {
+        const newPass = document.getElementById('newPassword').value;
+        const confirmPass = document.getElementById('confirmPassword').value;
+        if (newPass.length < 4) {
+            alert('Password must be at least 4 characters');
+            return;
+        }
+        if (newPass !== confirmPass) {
+            alert('Passwords do not match');
+            return;
+        }
+        adminPassword = newPass;
+        localStorage.setItem('adminPassword', adminPassword);
+        alert('Password changed successfully!');
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+    }
+
+    function loadArticlesList() {
+        const stored = localStorage.getItem('articleCMS_data');
+        if (stored) articles = JSON.parse(stored);
+        else articles = [];
+        renderAdminArticles();
+    }
+
+    function saveArticles() {
+        localStorage.setItem('articleCMS_data', JSON.stringify(articles));
+    }
+
+    function saveArticle() {
+        const title = document.getElementById('articleTitle').value;
+        const category = document.getElementById('articleCategory').value;
+        const image = document.getElementById('articleImage').value;
+        const excerpt = document.getElementById('articleExcerpt').value;
+        const content = document.getElementById('articleContent').value;
+        const editingId = document.getElementById('editingId').value;
+
+        if (!title || !excerpt || !content) {
+            alert('Please fill all fields');
+            return;
+        }
+
+        if (editingId) {
+            const index = articles.findIndex(a => a.id == editingId);
+            if (index !== -1) {
+                articles[index] = { ...articles[index], title, category, image, excerpt, content, date: new Date().toISOString() };
+            }
+            document.getElementById('editingId').value = '';
+        } else {
+            articles.push({
+                id: Date.now(), title, category, image, excerpt, content,
+                date: new Date().toISOString(), views: 0
+            });
+        }
+        saveArticles();
+        clearForm();
+        renderAdminArticles();
+        alert('Article saved!');
+    }
+
+    function editArticle(id) {
+        const article = articles.find(a => a.id === id);
+        if (article) {
+            document.getElementById('articleTitle').value = article.title;
+            document.getElementById('articleCategory').value = article.category;
+            document.getElementById('articleImage').value = article.image;
+            document.getElementById('articleExcerpt').value = article.excerpt;
+            document.getElementById('articleContent').value = article.content;
+            document.getElementById('editingId').value = article.id;
+            showTab('articles');
+        }
+    }
+
+    function deleteArticle(id) {
+        if (confirm('Delete this article?')) {
+            articles = articles.filter(a => a.id !== id);
+            saveArticles();
+            renderAdminArticles();
+            clearForm();
+        }
+    }
+
+    function clearForm() {
+        document.getElementById('articleTitle').value = '';
+        document.getElementById('articleExcerpt').value = '';
+        document.getElementById('articleContent').value = '';
+        document.getElementById('editingId').value = '';
+    }
+
+    function renderAdminArticles() {
+        const container = document.getElementById('adminArticlesList');
+        if (articles.length === 0) {
+            container.innerHTML = '<p>No articles yet. Create your first article!</p>';
+            return;
+        }
+        container.innerHTML = articles.map(a => `
+            <div class="article-item">
+                <div><strong>${escapeHtml(a.title)}</strong><br><small>${a.category} | ${new Date(a.date).toLocaleDateString()} | 👁️ ${a.views || 0} views</small></div>
+                <div>
+                    <button onclick="editArticle(${a.id})" class="btn-success">✏️ Edit</button>
+                    <button onclick="deleteArticle(${a.id})" class="btn-danger">🗑️ Delete</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    const savedPass = localStorage.getItem('adminPassword');
+    if (savedPass) adminPassword = savedPass;
+    else localStorage.setItem('adminPassword', adminPassword);
+    
+    checkSession();
+</script>
+</body>
+</html>
