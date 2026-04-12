@@ -308,4 +308,135 @@
         if (pass === adminPassword) {
             sessionStorage.setItem('adminLoggedIn', 'true');
             document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('adminContent').style.display =
+            document.getElementById('adminContent').style.display = 'block';
+            loadArticlesList();
+            loadSiteSettingsToForm();
+        } else {
+            alert('Wrong password!');
+        }
+    }
+
+    function logout() {
+        sessionStorage.removeItem('adminLoggedIn');
+        location.reload();
+    }
+
+    function changePassword() {
+        const newPass = document.getElementById('newPassword').value;
+        const confirmPass = document.getElementById('confirmPassword').value;
+        if (newPass.length < 4) {
+            alert('Password must be at least 4 characters');
+            return;
+        }
+        if (newPass !== confirmPass) {
+            alert('Passwords do not match');
+            return;
+        }
+        adminPassword = newPass;
+        localStorage.setItem('adminPassword', adminPassword);
+        alert('Password changed successfully!');
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+    }
+
+    function loadArticlesList() {
+        const stored = localStorage.getItem('articleCMS_data');
+        if (stored) articles = JSON.parse(stored);
+        else articles = [];
+        renderAdminArticles();
+    }
+
+    function saveArticles() {
+        localStorage.setItem('articleCMS_data', JSON.stringify(articles));
+    }
+
+    function saveArticle() {
+        const title = document.getElementById('articleTitle').value;
+        const category = document.getElementById('articleCategory').value;
+        const image = document.getElementById('articleImage').value;
+        const excerpt = document.getElementById('articleExcerpt').value;
+        const content = document.getElementById('articleContent').value;
+        const editingId = document.getElementById('editingId').value;
+
+        if (!title || !excerpt || !content) {
+            alert('Please fill all fields');
+            return;
+        }
+
+        if (editingId) {
+            const index = articles.findIndex(a => a.id == editingId);
+            if (index !== -1) {
+                articles[index] = { ...articles[index], title, category, image, excerpt, content, date: new Date().toISOString() };
+            }
+            document.getElementById('editingId').value = '';
+        } else {
+            articles.push({
+                id: Date.now(), title, category, image, excerpt, content,
+                date: new Date().toISOString(), views: 0
+            });
+        }
+        saveArticles();
+        clearForm();
+        renderAdminArticles();
+        alert('Article saved!');
+    }
+
+    function editArticle(id) {
+        const article = articles.find(a => a.id === id);
+        if (article) {
+            document.getElementById('articleTitle').value = article.title;
+            document.getElementById('articleCategory').value = article.category;
+            document.getElementById('articleImage').value = article.image;
+            document.getElementById('articleExcerpt').value = article.excerpt;
+            document.getElementById('articleContent').value = article.content;
+            document.getElementById('editingId').value = article.id;
+            showTab('articles');
+        }
+    }
+
+    function deleteArticle(id) {
+        if (confirm('Delete this article?')) {
+            articles = articles.filter(a => a.id !== id);
+            saveArticles();
+            renderAdminArticles();
+            clearForm();
+        }
+    }
+
+    function clearForm() {
+        document.getElementById('articleTitle').value = '';
+        document.getElementById('articleExcerpt').value = '';
+        document.getElementById('articleContent').value = '';
+        document.getElementById('editingId').value = '';
+    }
+
+    function renderAdminArticles() {
+        const container = document.getElementById('adminArticlesList');
+        if (articles.length === 0) {
+            container.innerHTML = '<p>No articles yet. Create your first article!</p>';
+            return;
+        }
+        container.innerHTML = articles.map(a => `
+            <div class="article-item">
+                <div><strong>${escapeHtml(a.title)}</strong><br><small>${a.category} | ${new Date(a.date).toLocaleDateString()} | 👁️ ${a.views || 0} views</small></div>
+                <div>
+                    <button onclick="editArticle(${a.id})" class="btn-success">✏️ Edit</button>
+                    <button onclick="deleteArticle(${a.id})" class="btn-danger">🗑️ Delete</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    const savedPass = localStorage.getItem('adminPassword');
+    if (savedPass) adminPassword = savedPass;
+    else localStorage.setItem('adminPassword', adminPassword);
+    
+    checkSession();
+</script>
+</body>
+</html>
