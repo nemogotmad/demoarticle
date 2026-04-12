@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>DragDrop Studio | Mobile + Categories + Background</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: #eef2ff;
+      transition: background-color 0.2s ease;
+      padding: 12px;
+    }
+
+    /* MAIN LAYOUT: responsive stack */
+    .dashboard {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* ADMIN PANEL (draggable source) */
+    .admin-panel {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(2px);
+      border-radius: 32px;
+      padding: 18px 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .admin-panel h2 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #1e2b3c, #2c5f8a);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+    }
+
+    .bg-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f1f5f9;
+      padding: 6px 14px;
+      border-radius: 60px;
+    }
+    .bg-control label {
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    #bgColorPicker {
+      width: 40px;
+      height: 40px;
+      border: 2px solid white;
+      border-radius: 50%;
+      cursor: pointer;
+      background: #eef2ff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    /* category tabs */
+    .category-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0 18px 0;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 8px;
+    }
+    .cat-btn {
+      background: transparent;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cat-btn.active {
+      background: #2c5f8a;
+      color: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .drag-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .draggable-card {
+      background: #f9fafb;
+      border: 1px solid #e2edf7;
+      border-radius: 24px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: grab;
+      transition: all 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+    .draggable-card:active { cursor: grabbing; }
+    .draggable-card:hover {
+      background: #ffffff;
+      border-color: #7e9fc5;
+      transform: scale(0.99);
+    }
+    .card-icon {
+      font-size: 2rem;
+      min-width: 48px;
+      text-align: center;
+    }
+    .card-info strong {
+      display: block;
+      font-size: 0.9rem;
+    }
+    .card-info small {
+      font-size: 0.7rem;
+      color: #4b5563;
+    }
+
+    /* custom creator row */
+    .custom-creator {
+      margin-top: 20px;
+      background: #f1f5f9;
+      border-radius: 28px;
+      padding: 12px;
+    }
+    .flex-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .flex-row input, .flex-row select {
+      flex: 1;
+      padding: 12px 14px;
+      border-radius: 60px;
+      border: 1px solid #cbd5e1;
+      font-size: 0.85rem;
+      background: white;
+    }
+    .btn-sm {
+      background: #2c5f8a;
+      color: white;
+      border: none;
+      padding: 0 20px;
+      border-radius: 60px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    /* CANVAS AREA */
+    .canvas-area {
+      background: #ffffff;
+      border-radius: 36px;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .canvas-header {
+      padding: 16px 20px;
+      background: #fefce8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-bottom: 1px solid #eef2ff;
+    }
+    .clear-btn {
+      background: #ffe4e2;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-weight: 500;
+      font-size: 0.8rem;
+      color: #b91c1c;
+      cursor: pointer;
+    }
+    #liveCanvas {
+      min-height: 480px;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      background: #ffffff;
+    }
+    .canvas-item {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 18px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
+      border: 1px solid #eef2ff;
+      position: relative;
+      transition: 0.1s;
+      word-break: break-word;
+    }
+    .canvas-item.text-item { border-left: 6px solid #3b82f6; }
+    .canvas-item.link-item { border-left: 6px solid #10b981; }
+    .canvas-item.image-item { border-left: 6px solid #f59e0b; text-align: center; background: #fefcf5; }
+    .canvas-item.quote-item { border-left: 6px solid #a855f7; background: #faf5ff; }
+    .canvas-item.button-item { border-left: 6px solid #ec489a; }
+    .canvas-item img {
+      max-width: 100%;
+      border-radius: 24px;
+      max-height: 280px;
+      object-fit: cover;
+    }
+    .delete-item {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: rgba(0,0,0,0.05);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 40px;
+      font-size: 1rem;
+      cursor: pointer;
+      color: #4b5563;
+    }
+    .delete-item:hover { background: #ef4444; color: white; }
+    .item-meta {
+      font-size: 0.7rem;
+      color: #6c757d;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .ad-container {
+      margin: 16px 20px 24px 20px;
+      background: #f8fafc;
+      border-radius: 28px;
+      padding: 14px;
+      text-align: center;
+      border: 1px dashed #b9d0f0;
+    }
+    .empty-message {
+      text-align: center;
+      color: #94a3b8;
+      padding: 40px 20px;
+    }
+    @media (min-width: 820px) {
+      .dashboard { flex-direction: row; align-items: flex-start; }
+      .admin-panel { flex: 1.2; position: sticky; top: 12px; }
+      .canvas-area { flex: 2.5; }
+    }
+    button, .draggable-card { touch-action: manipulation; }
+    .quote-text { font-style: italic; font-size: 1.05rem; }
+    .demo-button {
+      background: #ec489a;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 60px;
+      font-weight: 600;
+      display: inline-block;
+      text-align: center;
+    }
+  </style>
+</head>
+<body id="appBody">
+<div class="dashboard">
+  <!-- ADMIN PANEL: categories + many varieties -->
+  <div class="admin-panel">
+    <div class="panel-header">
+      <h2>✨ Drag & Drop Studio</h2>
+      <div class="bg-control">
+        <label>🎨 BG</label>
+        <input type="color" id="bgColorPicker" value="#eef2ff">
+      </div>
+    </div>
+    <div class="sub" style="font-size:0.75rem; color:#475569; margin-bottom:8px;">Drag any item → drop onto right canvas</div>
+
+    <!-- CATEGORIES TABS (text categories, links, images, special) -->
+    <div class="category-tabs" id="categoryTabs">
+      <button class="cat-btn active" data-cat="texts">📝 Texts</button>
+      <button class="cat-btn" data-cat="links">🔗 Links</button>
+      <button class="cat-btn" data-cat="images">🖼️ Images</button>
+      <button class="cat-btn" data-cat="specials">✨ Specials</button>
+    </div>
+
+    <!-- DYNAMIC DRAGGABLE ITEMS CONTAINER (varieties) -->
+    <div id="dragItemsContainer" class="drag-grid"></div>
+
+    <!-- CUSTOM CREATOR (make your own variety on the fly) -->
+    <div class="custom-creator">
+      <div style="font-weight:600; margin-bottom:10px;">➕ Make your own variant</div>
+      <div class="flex-row">
+        <select id="customTypeSelect">
+          <option value="text">📄 Text block</option>
+          <option value="link">🔗 Link</option>
+          <option value="image">🖼️ Image URL</option>
+          <option value="quote">💬 Quote</option>
+          <option value="button">🎯 Button (call to action)</option>
+        </select>
+        <input type="text" id="customValueInput" placeholder="Text content / URL / link text ..." value="Amazing new content!">
+      </div>
+      <div class="flex-row">
+        <input type="text" id="customExtra" placeholder="Extra (optional): alt text, button url etc">
+        <button id="createCustomDragBtn" class="btn-sm">✨ Create & Drag</button>
+      </div>
+      <div id="customDragPreview" style="margin-top: 12px;"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT CANVAS + ADS -->
+  <div class="canvas-area">
+    <div class="canvas-header">
+      <h3>📋 Live Canvas</h3>
+      <button class="clear-btn" id="clearAllBtn">🗑️ Clear all</button>
+    </div>
+    <div id="liveCanvas">
+      <div class="empty-message">🌈 Drag text, quotes, images, buttons or links → they appear here.<br>Change background color!</div>
+    </div>
+    <!-- GOOGLE ADS READY SECTION -->
+    <div class="ad-container" id="googleAdSlot">
+      <div class="ad-label">📢 Google AdSense Ready</div>
+      <div style="background:#eef2ff; border-radius: 20px; padding: 14px; text-align: center;">
+        <div style="font-weight:500;">Replace with your Ad Code</div>
+        <div style="font-size:0.7rem;">Paste your AdSense script inside this container</div>
+        <div style="background:white; margin-top: 10px; padding: 8px; border-radius: 16px;">⚡ Responsive ad space</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---------- DATA & STORAGE ----------
+  let contentItems = [];    // each: { id, type, data }
+  let nextId = 1;
+
+  // ----- VARIETY LIBRARY (many categories)
+  const itemLibrary = {
+    texts: [
+      { icon: "📝", title: "Welcome note", content: "🌟 Welcome to my drag & drop world! Customize everything.", type: "text" },
+      { icon: "✍️", title: "Inspiration", content: "Believe you can and you're halfway there. — Theodore Roosevelt", type: "text" },
+      { icon: "📌", title: "Tip card", content: "💡 Drag any element from left panel. Delete items with ✕ button.", type: "text" },
+      { icon: "📢", title: "Announcement", content: "🔥 New features: categories, background color, quotes, buttons!", type: "text" },
+      { icon: "📖", title: "Story snippet", content: "Once upon a time, a simple drag changed everything.", type: "text" }
+    ],
+    links: [
+      { icon: "🌐", title: "Google", url: "https://www.google.com", linkText: "Search Google", type: "link" },
+      { icon: "📘", title: "GitHub", url: "https://github.com", linkText: "Explore GitHub", type: "link" },
+      { icon: "🎨", title: "Inspiration", url: "https://www.behance.net", linkText: "Behance designs", type: "link" },
+      { icon: "📰", title: "News", url: "https://www.bbc.com", linkText: "Read top news", type: "link" },
+      { icon: "🛒", title: "Shopping", url: "https://www.amazon.com", linkText: "Shop now", type: "link" }
+    ],
+    images: [
+      { icon: "🏔️", title: "Mountain", src: "https://picsum.photos/id/104/500/350", alt: "mountain lake", type: "image" },
+      { icon: "🌅", title: "Sunset", src: "https://picsum.photos/id/15/500/350", alt: "golden sunset", type: "image" },
+      { icon: "🐱", title: "Cute animal", src: "https://picsum.photos/id/169/500/350", alt: "cute wildlife", type: "image" },
+      { icon: "🏖️", title: "Beach", src: "https://picsum.photos/id/100/500/350", alt: "coastal view", type: "image" },
+      { icon: "🌿", title: "Nature", src: "https://picsum.photos/id/96/500/350", alt: "forest leaves", type: "image" }
+    ],
+    specials: [
+      { icon: "💬", title: "Motivational Quote", quoteText: "“The only limit is your mind.”", author: "— Anonymous", type: "quote" },
+      { icon: "🎯", title: "Call to Action", buttonLabel: "Get Started →", buttonUrl: "https://example.com/start", type: "button" },
+      { icon: "🌟", title: "Star Quote", quoteText: "Do what you can, with what you have.", author: "— T. Roosevelt", type: "quote" },
+      { icon: "🔘", title: "Alert Button", buttonLabel: "✨ Learn More", buttonUrl: "https://example.com/learn", type: "button" },
+      { icon: "💎", title: "Wisdom", quoteText: "Simplicity is the ultimate sophistication.", author: "— Da Vinci", type: "quote" }
+    ]
+  };
+
+  // render draggable cards based on selected category
+  let currentCategory = "texts";
+
+  function renderDraggableItems() {
+    const container = document.getElementById("dragItemsContainer");
+    if (!container) return;
+    let items = [];
+    if (currentCategory === "texts") items = itemLibrary.texts;
+    else if (currentCategory === "links") items = itemLibrary.links;
+    else if (currentCategory === "images") items = itemLibrary.images;
+    else if (currentCategory === "specials") items = itemLibrary.specials;
+    
+    container.innerHTML = "";
+    items.forEach(item => {
+      const card = document.createElement("div");
+      card.className = "draggable-card";
+      card.setAttribute("draggable", "true");
+      // store full data in attributes
+      if (item.type === "text") {
+        card.setAttribute("data-type", "text");
+        card.setAttribute("data-content", item.content);
+      } else if (item.type === "link") {
+        card.setAttribute("data-type", "link");
+        card.setAttribute("data-url", item.url);
+        card.setAttribute("data-link-text", item.linkText);
+      } else if (item.type === "image") {
+        card.setAttribute("data-type", "image");
+        card.setAttribute("data-img-src", item.src);
+        card.setAttribute("data-img-alt", item.alt);
+      } else if (item.type === "quote") {
+        card.setAttribute("data-type", "quote");
+        card.setAttribute("data-quote-text", item.quoteText);
+        card.setAttribute("data-quote-author", item.author || "");
+      } else if (item.type === "button") {
+        card.setAttribute("data-type", "button");
+        card.setAttribute("data-button-label", item.buttonLabel);
+        card.setAttribute("data-button-url", item.buttonUrl);
+      }
+      // inner html
+      card.innerHTML = `
+        <div class="card-icon">${item.icon}</div>
+        <div class="card-info">
+          <strong>${escapeHtml(item.title)}</strong>
+          <small>${item.type === 'text' ? 'Paragraph' : item.type === 'link' ? 'Hyperlink' : item.type === 'image' ? 'Image' : item.type === 'quote' ? 'Quote' : 'Button'}</small>
+        </div>
+      `;
+      // dragstart event
+      card.addEventListener("dragstart", (e) => {
+        let transferObj = { type: item.type };
+        if (item.type === "text") transferObj.content = item.content;
+        else if (item.type === "link") { transferObj.url = item.url; transferObj.linkText = item.linkText; }
+        else if (item.type === "image") { transferObj.src = item.src; transferObj.alt = item.alt; }
+        else if (item.type === "quote") { transferObj.quoteText = item.quoteText; transferObj.author = item.author || ""; }
+        else if (item.type === "button") { transferObj.buttonLabel = item.buttonLabel; transferObj.buttonUrl = item.buttonUrl; }
+        e.dataTransfer.setData("text/plain", JSON.stringify(transferObj));
+        e.dataTransfer.effectAllowed = "copy";
+      });
+      container.appendChild(card);
+    });
+  }
+
+  // custom creation: make draggable card from form
+  function createCustomItem() {
+    const type = document.getElementById("customTypeSelect").value;
+    const mainValue = document.getElementById("customValueInput").value.trim();
+    const extra = document.getElementById("customExtra").value.trim();
+    if (!mainValue && type !== "button") { alert("Please enter content"); return false; }
+    let customItem = null;
+    if (type === "text") {
+      customItem = { type: "text", content: mainValue, title: "Custom text", icon: "📌" };
+    } else if (type === "link") {
+      let url = mainValue;
+      if (!url.startsWith("http")) url = "https://" + url;
+      customItem = { type: "link", url: url, linkText: extra || "Visit link", title: "Custom link", icon: "🔗" };
+    } else if (type === "image") {
+      customItem = { type: "image", src: mainValue, alt: extra || "custom image", title: "Custom image", icon: "🖼️" };
+    } else if (type === "quote") {
+      customItem = { type: "quote", quoteText: mainValue, author: extra || "— Unknown", title: "Custom quote", icon: "💬" };
+    } else if (type === "button") {
+      let label = mainValue || "Click me";
+      let btnUrl = extra || "https://example.com";
+      if (!btnUrl.startsWith("http")) btnUrl = "https://" + btnUrl;
+      customItem = { type: "button", buttonLabel: label, buttonUrl: btnUrl, title: "Custom button", icon: "🎯" };
+    }
+    if (!customItem) return false;
+    // add temporary draggable card into preview
+    const previewDiv = document.getElementById("customDragPreview");
+    const tempCard = document.createElement("div");
+    tempCard.className = "draggable-card";
+    tempCard.style.background = "#eef2ff";
+    tempCard.setAttribute("draggable", "true");
+    // set drag data
+    tempCard.addEventListener("dragstart", (e) => {
+      let transferData = { type: customItem.type };
+      if (customItem.type === "text") transferData.content = customItem.content;
+      else if (customItem.type === "link") { transferData.url = customItem.url; transferData.linkText = customItem.linkText; }
+      else if (customItem.type === "image") { transferData.src = customItem.src; transferData.alt = customItem.alt; }
+      else if (customItem.type === "quote") { transferData.quoteText = customItem.quoteText; transferData.author = customItem.author; }
+      else if (customItem.type === "button") { transferData.buttonLabel = customItem.buttonLabel; transferData.buttonUrl = customItem.buttonUrl; }
+      e.dataTransfer.setData("text/plain", JSON.stringify(transferData));
+    });
+    tempCard.innerHTML = `<div class="card-icon">${customItem.icon}</div><div class="card-info"><strong>✨ ${escapeHtml(customItem.title)}</strong><small>drag to canvas</small></div>`;
+    previewDiv.innerHTML = "";
+    previewDiv.appendChild(tempCard);
+    setTimeout(() => {
+      const msg = document.createElement("div");
+      msg.style.fontSize = "0.7rem";
+      msg.style.marginTop = "6px";
+      msg.innerText = "✅ Drag your new item ↑";
+      previewDiv.appendChild(msg);
+      setTimeout(() => msg.remove(), 2000);
+    }, 50);
+    return true;
+  }
+
+  // ----- CANVAS LOGIC (add item, delete, render)
+  function addItem(type, payload) {
+    const newItem = { id: nextId++, type: type, data: payload };
+    contentItems.push(newItem);
+    saveToLocal();
+    renderCanvas();
+  }
+
+  function deleteItemById(id) {
+    contentItems = contentItems.filter(i => i.id !== id);
+    saveToLocal();
+    renderCanvas();
+  }
+
+  function clearAll() {
+    if (confirm("Remove all items from canvas?")) {
+      contentItems = [];
+      saveToLocal();
+      renderCanvas();
+    }
+  }
+
+  function saveToLocal() {
+    localStorage.setItem("dragCanvasPro", JSON.stringify(contentItems));
+  }
+
+  function loadFromStorage() {
+    const stored = localStorage.getItem("dragCanvasPro");
+    if (stored) {
+      try {
+        contentItems = JSON.parse(stored);
+        if (contentItems.length) nextId = Math.max(...contentItems.map(i=>i.id),0)+1;
+        else nextId = 1;
+      } catch(e) {}
+    }
+    renderCanvas();
+  }
+
+  function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+  function renderCanvas() {
+    const canvasDiv = document.getElementById("liveCanvas");
+    if (!canvasDiv) return;
+    if (contentItems.length === 0) {
+      canvasDiv.innerHTML = `<div class="empty-message">✨ Drop texts, links, images, quotes or buttons!<br>🎨 Change background using color picker.</div>`;
+      return;
+    }
+    let html = "";
+    for (let item of contentItems) {
+      if (item.type === "text") {
+        html += `<div class="canvas-item text-item" data-id="${item.id}"><button class="delete-item" data-id="${item.id}">✕</button><div class="item-meta">📄 text</div><div>${escapeHtml(item.data.content)}</div></div>`;
+      } else if (item.type === "link") {
+        html += `<div class="canvas-item link-item" data-id="${item.id}"><button class="delete-item" data-id="${item.id}">✕</button><div class="item-meta">🔗 link</div><a href="${escapeHtml(item.data.url)}" target="_blank" rel="noopener">${escapeHtml(item.data.linkText)}</a><div style="font-size:0.7rem;">${escapeHtml(item.data.url)}</div></div>`;
+      } else if (item.type === "image") {
+        html += `<div class="canvas-item image-item" data-id="${item.id}"><button class="delete-item" data-id="${item.id}">✕</button><div class="item-meta">🖼️ image</div><img src="${escapeHtml(item.data.src)}" alt="${escapeHtml(item.data.alt || 'img')}" loading="lazy"><div>${escapeHtml(item.data.alt || '')}</div></div>`;
+      } else if (item.type === "quote") {
+        html += `<div class="canvas-item quote-item" data-id="${item.id}"><button class="delete-item" data-id="${item.id}">✕</button><div class="item-meta">💬 quote</div><div class="quote-text">“${escapeHtml(item.data.quoteText)}”</div><div style="margin-top:6px; font-size:0.8rem;">— ${escapeHtml(item.data.author)}</div></div>`;
+      } else if (item.type === "button") {
+        html += `<div class="canvas-item button-item" data-id="${item.id}"><button class="delete-item" data-id="${item.id}">✕</button><div class="item-meta">🎯 button</div><a href="${escapeHtml(item.data.buttonUrl)}" target="_blank" style="text-decoration:none;"><div class="demo-button" style="display:inline-block;">${escapeHtml(item.data.buttonLabel)}</div></a></div>`;
+      }
+    }
+    canvasDiv.innerHTML = html;
+    document.querySelectorAll(".delete-item").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const idVal = btn.getAttribute("data-id");
+        if(idVal) deleteItemById(parseInt(idVal));
+      });
+    });
+  }
+
+  // DROP HANDLER
+  function setupDropTargets() {
+    const canvasContainer = document.getElementById("liveCanvas");
+    const canvasArea = document.querySelector(".canvas-area");
+    const dropZones = [canvasContainer, canvasArea];
+    dropZones.forEach(zone => {
+      if(zone) {
+        zone.addEventListener("dragover", (e) => e.preventDefault());
+        zone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          const raw = e.dataTransfer.getData("text/plain");
+          if(!raw) return;
+          let parsed;
+          try { parsed = JSON.parse(raw); } catch(err) { return; }
+          const pType = parsed.type;
+          if(pType === "text") addItem("text", { content: parsed.content || "New text" });
+          else if(pType === "link") addItem("link", { url: parsed.url, linkText: parsed.linkText });
+          else if(pType === "image") addItem("image", { src: parsed.src, alt: parsed.alt });
+          else if(pType === "quote") addItem("quote", { quoteText: parsed.quoteText, author: parsed.author });
+          else if(pType === "button") addItem("button", { buttonLabel: parsed.buttonLabel, buttonUrl: parsed.buttonUrl });
+        });
+      }
+    });
+  }
+
+  // background color picker
+  const bgPicker = document.getElementById("bgColorPicker");
+  const bodyEl = document.getElementById("appBody");
+  if(bgPicker) {
+    bgPicker.addEventListener("input", (e) => { bodyEl.style.backgroundColor = e.target.value; });
+    const savedBg = localStorage.getItem("dragBgColor");
+    if(savedBg) { bodyEl.style.backgroundColor = savedBg; bgPicker.value = savedBg; }
+    else bodyEl.style.backgroundColor = "#eef2ff";
+    bgPicker.addEventListener("change", (e) => localStorage.setItem("dragBgColor", e.target.value));
+  }
+
+  // category switching
+  const catBtns = document.querySelectorAll(".cat-btn");
+  catBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      catBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentCategory = btn.getAttribute("data-cat");
+      renderDraggableItems();
+    });
+  });
+
+  // custom create button
+  document.getElementById("createCustomDragBtn")?.addEventListener("click", () => createCustomItem());
+
+  // clear all
+  document.getElementById("clearAllBtn")?.addEventListener("click", clearAll);
+
+  // init
+  renderDraggableItems();
+  loadFromStorage();
+  setupDropTargets();
+  // also re-run draggable for custom cards if any
+</script>
+</body>
+</html>
