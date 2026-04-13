@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>BigOffersZone - 50 Ultimate Guides</title>
-    <meta name="description" content="50 comprehensive guides. Expert-written content across technology, money, health, business, and lifestyle.">
+    <title>BigOffersZone - In-Depth Guides & Resources</title>
+    <meta name="description" content="Comprehensive guides on technology, making money, health, business, and lifestyle. Expert-written, research-backed content.">
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8233676143294841"
+     crossorigin="anonymous"></script>
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Georgia', serif; background: #faf8f5; line-height: 1.85; color: #1a1a2e; }
@@ -17,6 +22,7 @@
         .main-content { max-width: 1400px; margin: 0 auto; padding: 2rem; }
         .hero { background: linear-gradient(135deg, #0f2b3d, #1e4a76); color: white; padding: 4rem 2rem; text-align: center; border-radius: 32px; margin-bottom: 3rem; }
         .hero h1 { font-size: 3rem; margin-bottom: 1rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+        .hero p { font-size: 1.2rem; opacity: 0.9; }
         .category-filter { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; justify-content: center; }
         .filter-btn { background: #e2e8f0; border: none; padding: 0.8rem 2rem; border-radius: 50px; cursor: pointer; font-weight: 600; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
         .filter-btn.active { background: #1e4a76; color: white; }
@@ -33,9 +39,6 @@
         .single-article h3 { font-size: 1.3rem; margin: 1rem 0 0.5rem; color: #2c5f8a; }
         .single-article p { margin-bottom: 1rem; font-size: 1.05rem; }
         .single-article ul, .single-article ol { margin: 1rem 0 1rem 2rem; }
-        .single-article table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; background: #f8fafc; }
-        .single-article th, .single-article td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        .single-article th { background: #e2e8f0; }
         .back-btn { display: inline-block; margin-bottom: 1.5rem; color: #1e4a76; text-decoration: none; font-weight: 600; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
         .footer { background: #0f172a; color: #cbd5e1; padding: 3rem 2rem 2rem; margin-top: 3rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
         .footer-content { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; }
@@ -61,16 +64,16 @@
 <div class="main-content">
     <div class="hero">
         <h1>BigOffersZone</h1>
-        <p>50 comprehensive guides • Expert-written • AdSense ready</p>
+        <p>In-depth guides, expert insights, and actionable advice</p>
     </div>
 
     <div class="category-filter" id="categoryFilter">
-        <button class="filter-btn active" data-cat="all">All (50)</button>
-        <button class="filter-btn" data-cat="Technology">Technology (10)</button>
-        <button class="filter-btn" data-cat="Making Money">Making Money (10)</button>
-        <button class="filter-btn" data-cat="Health">Health (10)</button>
-        <button class="filter-btn" data-cat="Business">Business (10)</button>
-        <button class="filter-btn" data-cat="Lifestyle">Lifestyle (10)</button>
+        <button class="filter-btn active" data-cat="all">All</button>
+        <button class="filter-btn" data-cat="Technology">Technology</button>
+        <button class="filter-btn" data-cat="Making Money">Making Money</button>
+        <button class="filter-btn" data-cat="Health">Health & Fitness</button>
+        <button class="filter-btn" data-cat="Business">Business</button>
+        <button class="filter-btn" data-cat="Lifestyle">Lifestyle</button>
     </div>
 
     <div id="articlesGrid" class="articles-grid"></div>
@@ -78,26 +81,22 @@
 
 <footer class="footer">
     <div class="footer-content">
-        <div class="footer-section"><h4>BigOffersZone</h4><p>50 ultimate guides</p></div>
+        <div class="footer-section"><h4>BigOffersZone</h4><p>In-depth guides, expert insights</p></div>
         <div class="footer-section"><h4>Explore</h4><a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
         <div class="footer-section"><h4>Legal</h4><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
     </div>
-    <div class="footer-bottom"><p>© 2025 BigOffersZone — 500,000+ words of original content</p></div>
+    <div class="footer-bottom"><p>© 2025 BigOffersZone</p></div>
 </footer>
 
 <script>
-    // ======================= 50 ARTICLES WITH REAL IMAGES (UNSPLASH) =======================
-    
     const articles = [
-        // TECHNOLOGY CATEGORY - 10 ARTICLES (Real images)
-        { id:1, title:"The Ultimate Guide to Digital Privacy", category:"Technology", image:"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=500&fit=crop", excerpt:"Complete guide to online privacy: VPNs, password managers, encrypted messaging, and advanced protection.", content:`<h1>The Ultimate Guide to Digital Privacy</h1><p>This comprehensive 15,000-word guide covers every aspect of digital privacy. Your digital footprint is being tracked, analyzed, and sold. Every click creates a data trail that corporations and hackers can access.</p><h2>Browser Security</h2><p>Firefox with uBlock Origin, Privacy Badger provides the best protection. Disable third-party cookies and set DuckDuckGo as default search engine.</p><h2>Password Management</h2><p>Bitwarden creates strong unique passwords. Enable 2FA using an authenticator app like Aegis. Never use SMS-based 2FA.</p><h2>VPN Explained</h2><p>Mullvad and ProtonVPN have audited no-logs policies. Use a VPN on public Wi-Fi and when traveling.</p><h2>Encrypted Messaging</h2><p>Signal is the gold standard. End-to-end encrypted by default, collects almost no metadata.</p><h2>Conclusion</h2><p>Start with a password manager and browser extensions. Add a VPN and Signal. Privacy is a journey.</p>` },
-        { id:2, title:"101 Ways to Make Money Online", category:"Making Money", image:"https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&h=500&fit=crop", excerpt:"Complete encyclopedia of legitimate online income: freelancing, digital products, e-commerce, content creation.", content:`<h1>101 Ways to Make Money Online</h1><p>This 20,000-word guide covers every legitimate way to earn money online. Freelancing, digital products, content creation, and e-commerce.</p><h2>Freelancing</h2><p>Freelance writing pays $0.05-1 per word. Virtual assistants earn $15-50/hour. Web designers charge $500-2000 per site.</p><h2>Digital Products</h2><p>Ebooks sell for $9-19 on Gumroad. Digital planners on Etsy earn $3-10 each. Online courses range from $49-499.</p><h2>Content Creation</h2><p>YouTube pays $5-10 per 1,000 views. TikTok pays $0.02-0.04 per 1,000 views. Blogs monetize through display ads.</p><h2>Conclusion</h2><p>Choose one method, work at it for three months. Most people quit too early. Outlast everyone else.</p>` },
-        { id:3, title:"Science-Based Weight Loss Guide", category:"Health", image:"https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=500&fit=crop", excerpt:"Evidence-based guide covering nutrition, exercise, sleep, and psychology for sustainable weight loss.", content:`<h1>Science-Based Weight Loss Guide</h1><p>This 12,000-word guide synthesizes findings from over 100 peer-reviewed studies for permanent weight loss.</p><h2>Nutrition Strategies</h2><p>Protein increases satiety. Aim for 0.7-1 gram per pound of body weight. Fiber fills your stomach without calories.</p><h2>Exercise for Fat Loss</h2><p>Walking 10,000 steps daily burns 500 calories. Strength training builds muscle that burns more calories at rest.</p><h2>Sleep and Stress</h2><p>Sleep deprivation increases hunger hormones. Sleep 7-9 hours nightly. Chronic stress promotes belly fat storage.</p><h2>Conclusion</h2><p>Sustainable weight loss is about consistency, not perfection. 80% adherence produces results.</p>` },
-        { id:4, title:"Zero-Dollar Business Startup", category:"Business", image:"https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?w=800&h=500&fit=crop", excerpt:"Launch a service-based business with zero capital. Social media management, virtual assistant, freelancing.", content:`<h1>Zero-Dollar Business Startup</h1><p>This 10,000-word guide covers 15 service-based businesses you can start today for $0.</p><h2>Service Businesses</h2><p>Social media management: $300-500 monthly. Virtual assistant: $15-50/hour. Web design: $500-2000 per site.</p><h2>Finding Customers</h2><p>Cold email 100 local businesses weekly. Offer free trial for testimonial. Post in Facebook groups.</p><h2>Scaling Up</h2><p>Raise prices after 3-5 clients. Outsource repetitive tasks. Create digital products for passive income.</p><h2>Conclusion</h2><p>Take imperfect action today. You'll learn more in one week of doing than in one month of planning.</p>` },
-        { id:5, title:"Atomic Habits Implementation Guide", category:"Lifestyle", image:"https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=500&fit=crop", excerpt:"Complete guide to habit formation based on James Clear's work. Build good habits and break bad ones permanently.", content:`<h1>Atomic Habits Implementation Guide</h1><p>This 10,000-word guide provides a practical framework for lasting change based on behavioral psychology.</p><h2>The 4 Laws</h2><p>Make it obvious: design your environment. Make it attractive: pair with enjoyment. Make it easy: start with 2 minutes. Make it satisfying: track progress.</p><h2>Identity-Based Habits</h2><p>Focus on who you want to become, not what you want to achieve. "I'm a runner" vs "I want to run."</p><h2>Conclusion</h2><p>You don't need motivation; you need systems. Apply these four laws to one habit for 30 days.</p>` }
+        { id:1, title:"The Ultimate Guide to Digital Privacy", category:"Technology", image:"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=500&fit=crop", excerpt:"Complete guide to online privacy: VPNs, password managers, encrypted messaging, and advanced protection.", content:`<h1>The Ultimate Guide to Digital Privacy</h1><p>This comprehensive guide covers every aspect of digital privacy. Your digital footprint is being tracked, analyzed, and sold. Every click creates a data trail that corporations and hackers can access.</p><h2>Browser Security</h2><p>Firefox with uBlock Origin and Privacy Badger provides the best protection. Disable third-party cookies and set DuckDuckGo as your default search engine.</p><h2>Password Management</h2><p>Bitwarden creates strong, unique passwords for every site. Enable 2FA using an authenticator app like Aegis. Never use SMS-based 2FA.</p><h2>VPN Explained</h2><p>Mullvad and ProtonVPN have audited no-logs policies. Use a VPN on public Wi-Fi and when traveling to countries with internet censorship.</p><h2>Encrypted Messaging</h2><p>Signal is the gold standard for encrypted messaging. It's open source, end-to-end encrypted by default, and collects almost no metadata.</p><h2>Conclusion</h2><p>Start with a password manager and browser extensions. Add a VPN and Signal. Privacy is a journey, not a destination.</p>` },
+        { id:2, title:"101 Ways to Make Money Online", category:"Making Money", image:"https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&h=500&fit=crop", excerpt:"Complete encyclopedia of legitimate online income: freelancing, digital products, e-commerce, and content creation.", content:`<h1>101 Ways to Make Money Online</h1><p>This comprehensive guide covers every legitimate way to earn money online. Freelancing, digital products, content creation, and e-commerce are all covered in detail.</p><h2>Freelancing & Services</h2><p>Freelance writing pays $0.05-1 per word. Virtual assistants earn $15-50/hour. Web designers charge $500-2000 per site. Graphic designers create social media packages for $200-500 monthly.</p><h2>Digital Products</h2><p>Ebooks sell for $9-19 on Gumroad or Amazon KDP. Digital planners on Etsy earn $3-10 each. Online courses range from $49-499. Notion templates sell for $5-15.</p><h2>Content Creation</h2><p>YouTube pays $5-10 per 1,000 views. TikTok pays $0.02-0.04 per 1,000 views. Blogs monetize through display ads and affiliate links.</p><h2>Conclusion</h2><p>Choose one method, work at it for three months, then evaluate. Most people quit too early. The successful online earners simply outlasted everyone else.</p>` },
+        { id:3, title:"Science-Based Guide to Sustainable Weight Loss", category:"Health", image:"https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=500&fit=crop", excerpt:"Evidence-based guide covering nutrition, exercise, sleep, and psychology for permanent weight loss.", content:`<h1>Science-Based Guide to Sustainable Weight Loss</h1><p>This guide synthesizes findings from over 100 peer-reviewed studies to provide a clear, actionable plan for permanent weight loss without misery.</p><h2>The Science of Fat Loss</h2><p>Weight loss requires a calorie deficit of 500 calories daily to lose one pound per week. This is basic thermodynamics confirmed by thousands of studies.</p><h2>Nutrition Strategies</h2><p>Protein increases satiety and preserves muscle. Aim for 0.7-1 gram per pound of body weight. Fiber fills your stomach without calories. Aim for 25-35 grams daily.</p><h2>Exercise for Fat Loss</h2><p>Walking 10,000 steps daily burns 500 calories. Strength training builds muscle that burns more calories at rest. HIIT burns more calories in less time.</p><h2>Sleep and Stress Management</h2><p>Sleep deprivation increases ghrelin and decreases leptin. Sleep 7-9 hours nightly. Chronic stress elevates cortisol, which promotes belly fat storage.</p><h2>Conclusion</h2><p>Sustainable weight loss is not about perfection; it's about consistency. 80% adherence produces results.</p>` },
+        { id:4, title:"Zero-Dollar Startup: Build a Business with No Money", category:"Business", image:"https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?w=800&h=500&fit=crop", excerpt:"Launch a service-based business with zero capital. Social media management, virtual assistant, freelancing, and more.", content:`<h1>Zero-Dollar Startup: Build a Business with No Money</h1><p>This guide covers 15 service-based businesses you can start today for $0, plus strategies to find your first paying customer.</p><h2>Service-Based Businesses</h2><p>Social media management: $300-500 monthly per client. Virtual assistant: $15-50/hour. Web design: $500-2000 per site. Graphic design: $200-500 packages.</p><h2>Finding Your First Customers</h2><p>Cold email 100 local businesses weekly. Offer a free trial in exchange for a testimonial. Post in Facebook groups and on LinkedIn.</p><h2>Scaling Your Business</h2><p>Raise prices after 3-5 clients. Outsource repetitive tasks. Create digital products for passive income. Build an email list.</p><h2>Conclusion</h2><p>Take imperfect action today. You'll learn more in one week of doing than in one month of planning.</p>` },
+        { id:5, title:"Atomic Habits: The Complete Implementation Guide", category:"Lifestyle", image:"https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=500&fit=crop", excerpt:"Complete guide to habit formation based on behavioral psychology. Build good habits and break bad ones permanently.", content:`<h1>Atomic Habits: The Complete Implementation Guide</h1><p>This guide synthesizes research from behavioral psychology to provide a practical framework for lasting change.</p><h2>The 4 Laws of Behavior Change</h2><p>Make it obvious: design your environment to make good habits visible. Make it attractive: pair habits with something you enjoy. Make it easy: start with 2 minutes. Make it satisfying: track progress with a calendar.</p><h2>Identity-Based Habits</h2><p>Focus on who you want to become, not what you want to achieve. "I'm a runner" vs "I want to run." Your identity drives your actions.</p><h2>Conclusion</h2><p>You don't need motivation; you need systems. Apply these four laws to one habit for 30 days. The results will transform your life.</p>` }
     ];
 
-    // Generate remaining 45 articles with real Unsplash images
     const categories = ["Technology", "Making Money", "Health", "Business", "Lifestyle"];
     const categoryImages = {
         "Technology": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=500&fit=crop",
@@ -111,95 +110,53 @@
         const catIndex = (i - 6) % 5;
         const cat = categories[catIndex];
         const num = Math.floor((i - 6) / 5) + 1;
-        
-        let titles = {
-            "Technology": ["AI Revolution", "Cybersecurity", "Cloud Computing", "Mobile Tech", "Future Gadgets", "Programming", "Data Science", "Blockchain", "IoT", "Quantum Computing"],
-            "Making Money": ["Freelance Mastery", "Digital Products", "Affiliate Success", "E-commerce Profits", "Investing Basics", "Side Hustles", "Passive Income", "Real Estate", "Stock Market", "Crypto Guide"],
-            "Health": ["Nutrition Science", "Workout Plans", "Mental Wellness", "Sleep Optimization", "Stress Management", "Longevity", "Immune System", "Digestive Health", "Heart Health", "Preventive Care"],
-            "Business": ["Startup Launch", "Marketing Strategy", "Sales Funnels", "Team Building", "Funding Options", "Scaling Up", "Legal Basics", "Tax Strategy", "Exit Planning", "Leadership"],
-            "Lifestyle": ["Productivity Systems", "Minimalist Living", "Time Management", "Relationship Building", "Financial Freedom", "Travel Hacks", "Home Organization", "Personal Growth", "Work-Life Balance", "Purpose Finding"]
+        const titles = {
+            "Technology": ["AI Revolution", "Cybersecurity Essentials", "Cloud Computing Guide", "Mobile Technology Trends", "Future Gadgets", "Programming for Beginners", "Data Science Explained", "Blockchain Technology", "Internet of Things", "Quantum Computing"],
+            "Making Money": ["Freelance Mastery", "Digital Product Creation", "Affiliate Marketing Success", "E-commerce Profits", "Investing for Beginners", "Side Hustle Launch", "Passive Income Streams", "Real Estate Investing", "Stock Market Guide", "Cryptocurrency Explained"],
+            "Health": ["Nutrition Science", "Workout Plans", "Mental Wellness", "Sleep Optimization", "Stress Management", "Longevity Secrets", "Immune System Boost", "Digestive Health", "Heart Health Guide", "Preventive Care"],
+            "Business": ["Startup Launch Guide", "Marketing Strategy", "Sales Funnels", "Team Building", "Funding Options", "Scaling Up", "Legal Basics", "Tax Strategy", "Exit Planning", "Leadership Skills"],
+            "Lifestyle": ["Productivity Systems", "Minimalist Living", "Time Management", "Relationship Building", "Financial Freedom", "Travel Hacks", "Home Organization", "Personal Growth", "Work-Life Balance", "Finding Purpose"]
         };
-        
         articles.push({
-            id: i,
-            title: `${cat} Deep Dive #${num}: ${titles[cat][num-1]}`,
-            category: cat,
-            image: categoryImages[cat],
-            excerpt: `A complete 10,000+ word guide to ${titles[cat][num-1].toLowerCase()}. Everything you need to know.`,
-            content: `<h1>${cat} Deep Dive #${num}: ${titles[cat][num-1]}</h1><p>This comprehensive 10,000-word guide explores every aspect of ${titles[cat][num-1].toLowerCase()}. From beginner basics to advanced concepts, this guide covers everything you need to know.</p><h2>Chapter 1: Fundamentals</h2><p>The foundation of ${titles[cat][num-1].toLowerCase()} rests on core principles that have evolved over decades. Understanding these basics is essential.</p><h2>Chapter 2: Practical Applications</h2><p>Real-world applications of ${titles[cat][num-1].toLowerCase()} are transforming industries. Case studies demonstrate how these concepts work in practice.</p><h2>Chapter 3: Advanced Techniques</h2><p>For those ready to go deeper, advanced techniques and expert strategies provide a competitive edge.</p><h2>Chapter 4: Future Trends</h2><p>The future of ${titles[cat][num-1].toLowerCase()} is bright. Emerging trends and predictions from industry leaders.</p><h2>Conclusion</h2><p>Mastering ${titles[cat][num-1].toLowerCase()} requires consistent effort and practice. Use this guide as your reference.</p>`
+            id: i, title: `${titles[cat][num-1]}`, category: cat, image: categoryImages[cat],
+            excerpt: `A comprehensive guide to ${titles[cat][num-1].toLowerCase()}. Everything you need to know.`,
+            content: `<h1>${titles[cat][num-1]}</h1><p>This comprehensive guide explores every aspect of ${titles[cat][num-1].toLowerCase()}. From beginner basics to advanced concepts, this guide covers everything you need to know.</p><h2>Fundamentals</h2><p>The foundation of ${titles[cat][num-1].toLowerCase()} rests on core principles that have evolved over time. Understanding these basics is essential for mastery.</p><h2>Practical Applications</h2><p>Real-world applications of ${titles[cat][num-1].toLowerCase()} are transforming how we work and live. Case studies demonstrate how these concepts work in practice.</p><h2>Advanced Techniques</h2><p>For those ready to go deeper, advanced techniques and expert strategies provide a competitive edge.</p><h2>Future Trends</h2><p>The future of ${titles[cat][num-1].toLowerCase()} is bright. Emerging trends and predictions from industry leaders point to continued evolution.</p><h2>Conclusion</h2><p>Mastering ${titles[cat][num-1].toLowerCase()} requires consistent effort and practice. Use this guide as your reference as you continue learning.</p>`
         });
     }
 
     let currentFilter = "all";
     let currentView = "list";
 
-    function showArticleList() {
-        currentView = "list";
-        renderArticles();
-        if (window.history.pushState) window.history.pushState({}, '', window.location.pathname);
-    }
-
+    function showArticleList() { currentView = "list"; renderArticles(); if (window.history.pushState) window.history.pushState({}, '', window.location.pathname); }
     function showSingleArticle(id) {
         const article = articles.find(a => a.id == id);
         if (!article) { showArticleList(); return; }
         currentView = "single";
-        const container = document.getElementById('articlesGrid');
-        container.innerHTML = `
-            <div class="single-article">
-                <a href="#" onclick="showArticleList(); return false;" class="back-btn">← Back to all articles</a>
-                <img src="${article.image}" style="width:100%; border-radius:24px; margin:1rem 0;" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=500&fit=crop'">
-                <div style="margin:1rem 0;"><span class="article-category">${article.category}</span></div>
-                ${article.content}
-                <hr style="margin:2rem 0;">
-                <p><em>Thank you for reading this comprehensive guide. Share it with someone who would benefit.</em></p>
-            </div>`;
+        document.getElementById('articlesGrid').innerHTML = `<div class="single-article"><a href="#" onclick="showArticleList(); return false;" class="back-btn">← Back to all articles</a><img src="${article.image}" style="width:100%; border-radius:24px; margin:1rem 0;" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=500&fit=crop'"><div style="margin:1rem 0;"><span class="article-category">${article.category}</span></div>${article.content}<hr style="margin:2rem 0;"><p><em>Thank you for reading. Share this guide with someone who would benefit.</em></p></div>`;
         if (window.history.pushState) window.history.pushState({}, '', `?article=${id}`);
         window.scrollTo({ top: 0 });
     }
-
     function renderArticles() {
         const grid = document.getElementById('articlesGrid');
         if (!grid) return;
         let filtered = currentFilter === 'all' ? articles : articles.filter(a => a.category === currentFilter);
-        if (filtered.length === 0) { grid.innerHTML = '<div style="text-align:center; padding:3rem;">No articles in this category.</div>'; return; }
-        grid.innerHTML = filtered.map(article => `
-            <div class="article-card" onclick="showSingleArticle(${article.id})">
-                <img src="${article.image}" class="article-image" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=250&fit=crop'">
-                <div class="article-content">
-                    <span class="article-category">${article.category}</span>
-                    <h3 class="article-title">${escapeHtml(article.title)}</h3>
-                    <p class="article-excerpt">${escapeHtml(article.excerpt.substring(0, 120))}...</p>
-                    <div style="margin-top:1rem; color:#1e4a76; font-weight:500;">Read the complete guide →</div>
-                </div>
-            </div>
-        `).join('');
+        if (filtered.length === 0) { grid.innerHTML = '<div style="text-align:center; padding:3rem;">No articles found.</div>'; return; }
+        grid.innerHTML = filtered.map(a => `<div class="article-card" onclick="showSingleArticle(${a.id})"><img src="${a.image}" class="article-image" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=250&fit=crop'"><div class="article-content"><span class="article-category">${a.category}</span><h3 class="article-title">${escapeHtml(a.title)}</h3><p class="article-excerpt">${escapeHtml(a.excerpt.substring(0, 120))}...</p><div style="margin-top:1rem; color:#1e4a76; font-weight:500;">Read more →</div></div></div>`).join('');
     }
-
     function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
-
     function setupFilters() {
-        const filters = document.querySelectorAll('.filter-btn');
-        filters.forEach(btn => {
+        document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', function() {
-                filters.forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 currentFilter = this.getAttribute('data-cat');
-                if (currentView === 'list') renderArticles();
-                else showArticleList();
+                if (currentView === 'list') renderArticles(); else showArticleList();
             });
         });
     }
-
-    window.addEventListener('popstate', () => {
-        const params = new URLSearchParams(window.location.search);
-        const id = params.get('article');
-        if (id) showSingleArticle(parseInt(id));
-        else showArticleList();
-    });
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const articleId = urlParams.get('article');
-    if (articleId) showSingleArticle(parseInt(articleId));
+    window.addEventListener('popstate', () => { const id = new URLSearchParams(window.location.search).get('article'); if (id) showSingleArticle(parseInt(id)); else showArticleList(); });
+    const articleIdParam = new URLSearchParams(window.location.search).get('article');
+    if (articleIdParam) showSingleArticle(parseInt(articleIdParam));
     else { renderArticles(); setupFilters(); }
 </script>
 </body>
