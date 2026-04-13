@@ -51,4 +51,34 @@
         <p>Have questions, suggestions, or just want to say hello? We'd love to hear from you.</p>
         <div class="contact-info">
             <div class="info-card"><div class="info-icon">📧</div><h3>Email</h3><p>hello@bigofferszone.com</p><p>support@bigofferszone.com</p></div>
-            <div class="info-card"><div class="info-icon">
+            <div class="info-card"><div class="info-icon">💬</div><h3>Social Media</h3><p>Twitter: @bigofferszone</p><p>Facebook: /bigofferszone</p></div>
+            <div class="info-card"><div class="info-icon">📍</div><h3>Office</h3><p>123 Content Avenue<br>New York, NY 10001</p></div>
+        </div>
+        <div class="contact-form">
+            <h2>Send Us a Message</h2>
+            <div id="successMessage" class="success-message">✓ Thank you for your message. We'll respond within 24 hours.</div>
+            <input type="text" id="name" placeholder="Your Name">
+            <input type="email" id="email" placeholder="Your Email">
+            <textarea id="message" rows="5" placeholder="Your Message"></textarea>
+            <button onclick="sendMessage()">Send Message</button>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section"><h4>BigOffersZone</h4><p>In-depth guides, expert insights</p></div>
+            <div class="footer-section"><h4>Explore</h4><a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+            <div class="footer-section"><h4>Legal</h4><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+        </div>
+        <div class="footer-bottom"><p>© 2025 BigOffersZone</p></div>
+    </footer>
+    <script>
+        function sendMessage() {
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('message').value = '';
+            setTimeout(() => { document.getElementById('successMessage').style.display = 'none'; }, 3000);
+        }
+    </script>
+</body>
+</html>
