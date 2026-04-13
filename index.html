@@ -63,7 +63,6 @@
         .nav-links a:hover {
             color: #2a5298;
         }
-        /* NO ADMIN LINK ANYWHERE */
 
         .main-content {
             max-width: 1200px;
@@ -174,54 +173,6 @@
             font-weight: 500;
         }
 
-        .ad-container {
-            background: #f1f5f9;
-            padding: 1.5rem;
-            text-align: center;
-            margin: 2rem 0;
-            border-radius: 12px;
-            border: 2px dashed #ff9800;
-            position: relative;
-        }
-        .ad-label {
-            position: absolute;
-            top: -10px;
-            left: 10px;
-            background: #ff9800;
-            color: white;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: bold;
-        }
-
-        .sticky-ad {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
-            z-index: 9999;
-            padding: 10px;
-            text-align: center;
-            border-top: 3px solid #ff9800;
-            display: none;
-        }
-        .close-sticky {
-            position: absolute;
-            right: 10px;
-            top: 5px;
-            background: red;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 25px;
-            height: 25px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
         .footer {
             background: #1e293b;
             color: #cbd5e1;
@@ -281,7 +232,6 @@
             <a href="contact.html">Contact</a>
             <a href="privacy.html">Privacy</a>
             <a href="terms.html">Terms</a>
-            <!-- NO ADMIN LINK - COMPLETELY REMOVED -->
         </div>
     </div>
 </nav>
@@ -301,25 +251,9 @@
         <button class="filter-btn" data-cat="Tutorial">Tutorial</button>
     </div>
 
-    <div class="ad-container">
-        <div class="ad-label">Ad #1 - Top Banner (728x90)</div>
-        <div>📢 [DEMO] Google AdSense - Leaderboard Ad<br><small>Replace with your ad code</small></div>
-    </div>
-
     <div id="articlesContainer">
         <div id="articlesGrid" class="articles-grid"></div>
     </div>
-
-    <div class="ad-container">
-        <div class="ad-label">Ad #2 - In-Feed Native Ad</div>
-        <div>📱 [DEMO] Native Ad Blending with Content<br><small>High CTR placement</small></div>
-    </div>
-</div>
-
-<div id="stickyAd" class="sticky-ad">
-    <button class="close-sticky" onclick="closeStickyAd()">✕</button>
-    <div class="ad-label" style="position: absolute; top: -10px; left: 10px;">Ad #3 - Sticky Footer</div>
-    <div>⚡ [DEMO] Sticky Ad - Always visible at bottom</div>
 </div>
 
 <footer class="footer">
@@ -333,7 +267,6 @@
             <a href="index.html">Home</a>
             <a href="about.html">About Us</a>
             <a href="contact.html">Contact</a>
-            <!-- NO ADMIN LINK IN FOOTER -->
         </div>
         <div class="footer-section">
             <h4>Legal</h4>
@@ -383,7 +316,7 @@
                     title: "Getting Started with ArticleCMS",
                     category: "Tutorial",
                     image: "https://picsum.photos/id/0/400/250",
-                    excerpt: "Learn how to use this powerful content management system.",
+                    excerpt: "Learn how to use this powerful content management system to create and manage your articles.",
                     content: "<p>Welcome to ArticleCMS! This is a complete content management system.</p>",
                     date: new Date().toISOString(),
                     views: 0
@@ -451,20 +384,12 @@
                 <h1 style="margin: 1rem 0;">${escapeHtml(article.title)}</h1>
                 <div style="color: #64748b; margin-bottom: 1.5rem;">📅 ${new Date(article.date).toLocaleDateString()} | 👁️ ${article.views} views</div>
                 <div style="line-height: 1.8;">${article.content}</div>
-                <div class="ad-container" style="margin: 2rem 0;">
-                    <div class="ad-label">Ad #4 - In-Article</div>
-                    <div>📦 [DEMO] Mid-Content Ad</div>
-                </div>
             </div>
         `;
         
         if (window.history.pushState) {
             window.history.pushState({}, '', `?article=${id}`);
         }
-        
-        triggerPopupAd();
-        triggerInterstitialAd();
-        triggerRedirectAd();
     }
 
     function renderArticles() {
@@ -522,52 +447,6 @@
         });
     }
 
-    function triggerPopupAd() {
-        if (sessionStorage.getItem('popupShown')) return;
-        sessionStorage.setItem('popupShown', 'true');
-        setTimeout(() => {
-            const popup = document.createElement('div');
-            popup.style.cssText = `position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10000; display: flex; align-items: center; justify-content: center;`;
-            popup.innerHTML = `<div style="background: white; border-radius: 20px; padding: 30px; max-width: 500px; text-align: center;"><button onclick="this.closest('div').parentElement.remove()" style="position: absolute; top: 10px; right: 15px; background: red; color: white; border: none; border-radius: 50%; width: 30px; height: 30px;">✕</button><div class="ad-label">Ad #5 - Popup</div><h3>Special Offer!</h3><div style="background: #f0f0f0; padding: 30px; margin: 20px 0;">⚡ Popup Ad</div><button onclick="this.closest('div').parentElement.remove()" style="background: #2a5298; padding: 10px 30px;">Continue</button></div>`;
-            document.body.appendChild(popup);
-        }, 2000);
-    }
-    
-    function triggerInterstitialAd() {
-        if (sessionStorage.getItem('interstitialShown')) return;
-        sessionStorage.setItem('interstitialShown', 'true');
-        setTimeout(() => {
-            const interstitial = document.createElement('div');
-            interstitial.style.cssText = `position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: white; z-index: 10001; display: flex; align-items: center; justify-content: center;`;
-            interstitial.innerHTML = `<div style="text-align: center;"><div class="ad-label">Ad #6 - Interstitial</div><h2>Advertisement</h2><div style="background: #f0f0f0; padding: 40px; margin: 20px;">⚡ Full Screen Ad</div><button onclick="this.closest('div').parentElement.remove()" style="background: #2a5298; padding: 10px 30px;">Continue</button></div>`;
-            document.body.appendChild(interstitial);
-            setTimeout(() => { if(interstitial.parentNode) interstitial.remove(); }, 5000);
-        }, 3000);
-    }
-    
-    function triggerRedirectAd() {
-        if (sessionStorage.getItem('redirectShown')) return;
-        sessionStorage.setItem('redirectShown', 'true');
-        setTimeout(() => { window.open('https://www.google.com/adsense/start/', '_blank'); }, 5000);
-    }
-    
-    function showStickyAd() {
-        if (sessionStorage.getItem('stickyShown')) return;
-        sessionStorage.setItem('stickyShown', 'true');
-        setTimeout(() => { document.getElementById('stickyAd').style.display = 'block'; }, 1000);
-    }
-    
-    function closeStickyAd() { document.getElementById('stickyAd').style.display = 'none'; }
-    
-    function initializeAds() {
-        setTimeout(() => {
-            showStickyAd();
-            triggerPopupAd();
-            triggerInterstitialAd();
-            triggerRedirectAd();
-        }, 1000);
-    }
-
     window.addEventListener('popstate', function() {
         const articleId = getURLParameter('article');
         if (articleId) { showSingleArticle(parseInt(articleId)); } 
@@ -581,7 +460,6 @@
     loadSiteSettings();
     loadArticles();
     setupFilters();
-    initializeAds();
 </script>
 </body>
 </html>
